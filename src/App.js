@@ -1,17 +1,33 @@
-import React, { Component } from "react";
-import shortid from "shortid";
+import React, { Component } from 'react';
+import shortid from 'shortid';
 
-import contactList from "./phonelist.json";
+import contactList from './phonelist.json';
 
-import ContactList from "./components/ContactList";
-import ContactForm from "./components/ContactForm";
-import ContactFilter from "./components/ContactFilter";
+import ContactList from './components/ContactList';
+import ContactForm from './components/ContactForm';
+import ContactFilter from './components/ContactFilter';
 
 class App extends Component {
   state = {
     contacts: contactList,
-    filter: "",
+    filter: '',
   };
+
+  //записать в localStorage  contact, перезаписать стейт contacts
+  componentDidMount() {
+    const contacts = JSON.parse(localStorage.getItem('contact'));
+
+    if (contacts) {
+      console.log(contacts);
+      this.setState({ contacts });
+    }
+  }
+  // Если предыдущее состояние contacts не равен состоянию-то взять с локал стореджа contact
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contact', JSON.stringify(this.state.contacts));
+    }
+  }
 
   addContact = ({ name, number }) => {
     if (this.isInContacts(name)) {
@@ -24,15 +40,15 @@ class App extends Component {
       number,
     };
 
-    this.setState((prevState) => ({
+    this.setState(prevState => ({
       contacts: [contact, ...prevState.contacts],
     }));
   };
 
-  isInContacts = (name) => {
+  isInContacts = name => {
     name = name.toLowerCase();
     const isFoundName = this.state.contacts.find(
-      (contact) => contact.name.toLowerCase() === name
+      contact => contact.name.toLowerCase() === name
     );
     if (isFoundName) {
       alert(`${name} was found`);
@@ -40,23 +56,21 @@ class App extends Component {
     }
   };
 
-  deleteContact = (contactId) => {
-    this.setState((prevState) => ({
-      contacts: prevState.contacts.filter(
-        (contact) => contact.id !== contactId
-      ),
+  deleteContact = contactId => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== contactId),
     }));
   };
 
   //фильтр,принятие ивента
-  changeFilter = (e) => {
+  changeFilter = e => {
     this.setState({ filter: e.currentTarget.value });
   };
   // метод фильтрации массива
   getVisibleContacts = () => {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
-    return contacts.filter((contact) =>
+    return contacts.filter(contact =>
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
