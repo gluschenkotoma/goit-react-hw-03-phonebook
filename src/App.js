@@ -13,7 +13,7 @@ class App extends Component {
     filter: '',
   };
 
-  //записать в localStorage  contact, перезаписать стейт contacts
+  //записать в localStorage  contact, ре-рендер стейта
   componentDidMount() {
     const contacts = JSON.parse(localStorage.getItem('contact'));
 
