@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
-import s from "./ContactForm.module.scss";
-import * as Yup from "yup";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import s from './ContactForm.module.scss';
+import * as Yup from 'yup';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const ErrorText = styled.p`
   color: red;
@@ -14,7 +14,7 @@ const FormError = ({ name }) => {
   return (
     <ErrorMessage
       name={name}
-      render={(message) => <ErrorText>{message}</ErrorText>}
+      render={message => <ErrorText>{message}</ErrorText>}
     />
   );
 };
@@ -29,14 +29,14 @@ const validationSchema = Yup.object({
   number: Yup.string()
     .matches(
       /\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/,
-      "Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +"
+      'Phone number should contain only numbers and it also could contain spaces, dash, parenthesis and startts with +'
     )
     .required(),
 });
 
 const initialValues = {
-  name: "",
-  number: "",
+  name: '',
+  number: '',
 };
 
 class ContactForm extends Component {
