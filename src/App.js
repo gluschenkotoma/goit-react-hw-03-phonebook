@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import shortid from 'shortid';
 
 import contactList from './phonelist.json';
 
@@ -29,30 +28,19 @@ class App extends Component {
     }
   }
 
-  addContact = ({ name, number }) => {
-    if (this.isInContacts(name)) {
-      alert(`${name} is already in contacts`);
-      return;
-    }
-    const contact = {
-      id: shortid.generate(),
-      name,
-      number,
-    };
-
-    this.setState(prevState => ({
-      contacts: [contact, ...prevState.contacts],
-    }));
+  isInContacts = () => {
+    return this.state.contacts.map(contact => contact.name.toLowerCase());
   };
 
-  isInContacts = name => {
-    name = name.toLowerCase();
-    const isFoundName = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === name
-    );
-    if (isFoundName) {
-      alert(`${name} was found`);
-      return;
+  addContact = data => {
+    const existingNames = this.isInContacts();
+
+    if (existingNames.includes(data.name.toLowerCase())) {
+      alert(`${data.name} is already in contacts`);
+    } else {
+      this.setState(prevState => ({
+        contacts: [data, ...prevState.contacts],
+      }));
     }
   };
 
